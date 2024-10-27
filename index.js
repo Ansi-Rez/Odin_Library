@@ -1,36 +1,28 @@
+//initial library array, holds all the books and will be added to by the user.
 const myLibrary = [{title:"The Name of The Wind", author: "Patrick Rothfuss", page:800 , read:"have not read"},
   {title:"11/22/63", author: "Stephen King", page:682 , read:"have not read"},
   {title:"Do Androids Dream Of Electric Sheep", author: "Phillip K. Dick", page:225 , read:"read"}];
 
+//Retrieve the form for later use
   let bookForm = document.querySelector("#book_form");
   bookForm.style.display = "none";
 
-  document.querySelector("#submit_book").addEventListener("click",(e)=>
-  {
-    e.preventDefault();
-
-    let title = document.querySelector("#title").value;
-    let author = document.querySelector("#author").value;
-    let pages = document.querySelector("#pages").value;
-    let read = document.querySelector("#read").value;
-
-    addBookToLibrary(title,author,pages,read);
-  });
-
+//Function that prints info about a book
 function Book(title,author,pages,read)
 {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
-
-  this.info = function()
-  {
-    return "The book's title is " + this.title + " the author is " +
-      this.author + " and it contains " + this.pages + " pages, " + this.read + ".";
-  };
 }
 
+Book.prototype.info = function()
+{
+  return "The book's title is " + this.title + " the author is " +
+  this.author + " and it contains " + this.pages + " pages, " + this.read + ".";
+}
+
+//Add a book to the library array and then displays it in the table
 function addBookToLibrary(user_title,user_author,user_pages,user_read)
 {
   let table = document.querySelector(".library_table");
@@ -67,6 +59,21 @@ function addBookToLibrary(user_title,user_author,user_pages,user_read)
     }
 }
 
+/*Cancels the default effect of the submit button and retrieves user data from the form,
+ it then sends it to addBookToLibrary()*/
+  document.querySelector("#submit_book").addEventListener("click",(e)=>
+  {
+    e.preventDefault();
+
+    let title = document.querySelector("#title").value;
+    let author = document.querySelector("#author").value;
+    let pages = document.querySelector("#pages").value;
+    let read = document.querySelector("#read").value;
+
+    addBookToLibrary(title,author,pages,read);
+  });
+
+//Makes the form visible/invisible
 document.querySelector("#new_book").addEventListener("click", ()=>
 {
   if(bookForm.style.display == "none")
@@ -79,6 +86,7 @@ document.querySelector("#new_book").addEventListener("click", ()=>
   }
 });
 
+//creates the table by looping through the initial array.
 (function loopThroughBooks()
 {
 
