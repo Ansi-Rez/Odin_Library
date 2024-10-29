@@ -57,6 +57,14 @@ function addBookToLibrary(user_title,user_author,user_pages,user_read)
           break; 
       }
     }
+
+    let tableData = document.createElement("td");
+
+    tableRow.appendChild(tableData);
+
+    let bId= '' + c;
+
+    tableData.innerHTML = "<button type='button' class='remove_button " + bId + "'>Remove</button>"
 }
 
 /*Cancels the default effect of the submit button and retrieves user data from the form,
@@ -121,5 +129,13 @@ document.querySelector("#new_book").addEventListener("click", ()=>
             break; 
         }
       }
+
+      let tableData = document.createElement("td");
+
+      tableRow.appendChild(tableData);
+
+      let bId= '' + i;
+
+      tableData.innerHTML = "<button type='button' class='remove_button " + bId + "'>Remove</button>"
   }
 })();
