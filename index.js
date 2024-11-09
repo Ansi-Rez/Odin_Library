@@ -8,7 +8,7 @@ const myLibrary = [book1,book2,book3];
 let table = document.querySelector(".book_table > tbody");
 
 
-//Book constructor that has a prototype function that prints the specific book's information.
+//Book constructor.
 function Book(title,author,page,read)
 {
   this.title = title;
@@ -17,6 +17,7 @@ function Book(title,author,page,read)
   this.read = read;
 }
 
+//Prototype function that prints the specific book's information.
 Book.prototype.info = function()
 {
   return "The book's title is " + this.title + " the author is " +
@@ -24,6 +25,18 @@ Book.prototype.info = function()
 }
 
 
+//Prototype function that changes the read status of a book
+Book.prototype.changeReadStatus = function()
+{
+  if(this.read == "Read")
+  {
+    this.read = "HaveNotRead";
+  }
+  else if(this.read == "HaveNotRead")
+  {
+    this.read = "Read";
+  }
+}
 
 //Retrieves information from the form and sends it to the array.
 document.querySelector("#submit_book").addEventListener("click",(e)=>
@@ -70,7 +83,14 @@ function addBookToLibrary()
               td.textContent = myLibrary[i].page;
               break;
             case 3:
-              td.textContent = myLibrary[i].read;
+              if(myLibrary[i].read == "Read")
+              {
+                td.innerHTML = "<button type='button' class='read_status' data-button-number='"+ i +"'>Read</button>";
+              }
+              else if(myLibrary[i].read == "HaveNotRead")
+              {
+                td.innerHTML = "<button type='button' class='read_status' data-button-number='"+ i +"'>Have not read</button>";
+              }
               break;
           }
         }
@@ -125,7 +145,14 @@ function refreshTable()
               td.textContent = myLibrary[i].page;
               break;
             case 3:
-              td.textContent = myLibrary[i].read;
+              if(myLibrary[i].read == "Read")
+              {
+                td.innerHTML = "<button type='button' class='read_status' data-button-number='"+ i +"'>Read</button>";
+              }
+              else if(myLibrary[i].read == "HaveNotRead")
+              {
+                td.innerHTML = "<button type='button' class='read_status' data-button-number='"+ i +"'>Have not read</button>";
+              }
               break;
           }
         }
@@ -147,6 +174,19 @@ function refreshTable()
         }
         );
         }
+
+        let readStatusButtons = document.querySelectorAll(".read_status");
+
+        for(let i=0; i < readStatusButtons.length; i++)
+        {
+          readStatusButtons[i].addEventListener("click",(e)=>
+          {
+            let array_index = e.target.getAttribute("data-button-number");
+
+            myLibrary[array_index].changeReadStatus();
+            refreshTable();
+          });
+        }
 }
 
 //Removes book from library array
@@ -163,4 +203,19 @@ book_info[i].addEventListener("click",(e)=>
   refreshTable();
 }
 );
+}
+
+//Event listener for readstatus function
+
+let readStatusButtons = document.querySelectorAll(".read_status");
+
+for(let i=0; i < readStatusButtons.length; i++)
+{
+  readStatusButtons[i].addEventListener("click",(e)=>
+  {
+    let array_index = e.target.getAttribute("data-button-number");
+
+    myLibrary[array_index].changeReadStatus();
+    refreshTable();
+  });
 }
