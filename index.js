@@ -1,18 +1,19 @@
+//Premade book objects
+const book1 = new Book("The Name Of The Wind", "Patrick Rothfuss", 662, "HaveNotRead");
+const book2 = new Book("007:Carte Blanche", "Jeffery Deaver", 404, "HaveNotRead");
+const book3 = new Book("Frankenstein", "Mary Shelly", 215, "HaveNotRead");
+
 //initial library array, holds all the books and will be added to by the user.
-const myLibrary = [{title:"The Name of The Wind", author: "Patrick Rothfuss", page:800 , read:"have not read"},
-  {title:"11/22/63", author: "Stephen King", page:682 , read:"have not read"},
-  {title:"Do Androids Dream Of Electric Sheep", author: "Phillip K. Dick", page:225 , read:"read"}];
+const myLibrary = [book1,book2,book3];
+let table = document.querySelector(".book_table > tbody");
 
-//Retrieve the form for later use
-  let bookForm = document.querySelector("#book_form");
-  bookForm.style.display = "none";
 
-//Function that prints info about a book
-function Book(title,author,pages,read)
+//Book constructor that has a prototype function that prints the specific book's information.
+function Book(title,author,page,read)
 {
   this.title = title;
   this.author = author;
-  this.pages = pages;
+  this.page = page;
   this.read = read;
 }
 
@@ -22,120 +23,144 @@ Book.prototype.info = function()
   this.author + " and it contains " + this.pages + " pages, " + this.read + ".";
 }
 
-//Add a book to the library array and then displays it in the table
-function addBookToLibrary(user_title,user_author,user_pages,user_read)
+
+
+//Retrieves information from the form and sends it to the array.
+document.querySelector("#submit_book").addEventListener("click",(e)=>
 {
-  let table = document.querySelector(".library_table");
+  e.preventDefault();
 
-  let tableRow = document.createElement("tr");  
-  table.appendChild(tableRow);
+  addBookToLibrary();
 
-  myLibrary.push({title:user_title,author:user_author,page:user_pages,read:user_read});
-
-  let c = myLibrary.length - 1;
-
-  for(let j = 0; j < Object.keys(myLibrary[c]).length; j++)
-    {
-
-      let tableData = document.createElement("td");
-
-      tableRow.appendChild(tableData);
-
-      switch(j)
-      {
-        case 0:
-          tableData.textContent = myLibrary[c].title;
-          break;
-        case 1:
-          tableData.textContent = myLibrary[c].author;
-          break;
-        case 2:
-          tableData.textContent = myLibrary[c].page;
-          break;
-        case 3:
-          tableData.textContent = myLibrary[c].read;
-          break; 
-      }
-    }
-
-    let tableData = document.createElement("td");
-
-    tableRow.appendChild(tableData);
-
-    let bId= '' + c;
-
-    tableData.innerHTML = "<button type='button' class='remove_button " + bId + "'>Remove</button>"
-}
-
-/*Cancels the default effect of the submit button and retrieves user data from the form,
- it then sends it to addBookToLibrary()*/
-  document.querySelector("#submit_book").addEventListener("click",(e)=>
-  {
-    e.preventDefault();
-
-    let title = document.querySelector("#title").value;
-    let author = document.querySelector("#author").value;
-    let pages = document.querySelector("#pages").value;
-    let read = document.querySelector("#read").value;
-
-    addBookToLibrary(title,author,pages,read);
-  });
-
-//Makes the form visible/invisible
-document.querySelector("#new_book").addEventListener("click", ()=>
-{
-  if(bookForm.style.display == "none")
-  {
-    bookForm.style.display = "block";
-  }
-  else
-  {
-    bookForm.style.display = "none";
-  }
+  //clears form after data is sent to the array.
+  document.querySelector("#title").value = ""; 
+  document.querySelector("#author").value = "";
+  document.querySelector("#page").value = "";
+  document.querySelector("input[name='readstatus']:checked").checked = false;
 });
 
-//creates the table by looping through the initial array.
-(function loopThroughBooks()
+//adds book to library
+function addBookToLibrary()
 {
+  const bookEntry = new Book(document.querySelector("#title").value, document.querySelector("#author").value, Number(document.querySelector("#page").value), document.querySelector("input[name='readstatus']:checked").value);
+  myLibrary.push(bookEntry);
+  refreshTable();
+}
 
-  let table = document.querySelector(".library_table");
-
-  for(let i = 0; i < myLibrary.length; i++)
-  {  
-    let tableRow = document.createElement("tr");
-    
-    table.appendChild(tableRow);
-
-    for(let j = 0; j < Object.keys(myLibrary[i]).length; j++)
-      {
-
-        let tableData = document.createElement("td");
-
-        tableRow.appendChild(tableData);
-
-        switch(j)
+//Loops through array and displays the book objects
+(function displayBooks()
+{
+  for(let i=0; i < myLibrary.length; i++)
+    {
+      let tr = document.createElement("tr");
+      table.appendChild(tr);
+      for(let j=0; j < Object.keys(myLibrary[i]).length; j++)
         {
-          case 0:
-            tableData.textContent = myLibrary[i].title;
-            break;
-          case 1:
-            tableData.textContent = myLibrary[i].author;
-            break;
-          case 2:
-            tableData.textContent = myLibrary[i].page;
-            break;
-          case 3:
-            tableData.textContent = myLibrary[i].read;
-            break; 
+          let td = document.createElement("td");
+          tr.appendChild(td);
+          switch(j)
+          {
+            case 0:
+              td.textContent = myLibrary[i].title;
+              break;
+            case 1:
+              td.textContent = myLibrary[i].author;
+              break;
+            case 2:
+              td.textContent = myLibrary[i].page;
+              break;
+            case 3:
+              td.textContent = myLibrary[i].read;
+              break;
+          }
         }
-      }
 
-      let tableData = document.createElement("td");
+        let td = document.createElement("td");
+        tr.appendChild(td);
 
-      tableRow.appendChild(tableData);
-
-      let bId= '' + i;
-
-      tableData.innerHTML = "<button type='button' class='remove_button " + bId + "'>Remove</button>"
-  }
+        td.innerHTML = "<button type='button' class='remove' data-button-number='"+ i +"'>Remove</button>";
+    }
 })();
+
+//Dialog
+
+document.querySelector("#new_book").addEventListener("click",()=>
+{
+  let dialog = document.querySelector("#form_dialog");
+
+  dialog.show();
+});
+
+document.querySelector("#close_dialog").addEventListener("click",()=>
+{
+  let dialog = document.querySelector("#form_dialog");
+
+  dialog.close();
+});
+
+//Recreates table with the new book added to it
+
+function refreshTable()
+{
+  table.innerHTML = "";
+
+
+    for(let i=0; i < myLibrary.length; i++)
+    {
+      let tr = document.createElement("tr");
+      table.appendChild(tr);
+      for(let j=0; j < Object.keys(myLibrary[i]).length; j++)
+        {
+          let td = document.createElement("td");
+          tr.appendChild(td);
+          switch(j)
+          {
+            case 0:
+              td.textContent = myLibrary[i].title;
+              break;
+            case 1:
+              td.textContent = myLibrary[i].author;
+              break;
+            case 2:
+              td.textContent = myLibrary[i].page;
+              break;
+            case 3:
+              td.textContent = myLibrary[i].read;
+              break;
+          }
+        }
+
+        let td = document.createElement("td");
+        tr.appendChild(td);
+
+        td.innerHTML = "<button type='button' class='remove' data-button-number='"+ i +"'>Remove</button>";
+    }
+        let book_info = document.querySelectorAll(".remove");
+
+        for(let c=0; c < book_info.length; c++)
+        {
+        book_info[c].addEventListener("click",(e)=>
+        {
+          let array_index = e.target.getAttribute("data-button-number");
+          myLibrary.splice(array_index,1);
+          refreshTable();
+        }
+        );
+        }
+}
+
+//Removes book from library array
+
+let book_info = document.querySelectorAll(".remove");
+
+for(let i=0; i < book_info.length; i++)
+{
+book_info[i].addEventListener("click",(e)=>
+{
+  let array_index = e.target.getAttribute("data-button-number");
+
+  myLibrary.splice(array_index,1);
+  refreshTable();
+}
+);
+}

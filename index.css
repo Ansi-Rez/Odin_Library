@@ -1,9 +1,33 @@
-.library_table
+.form_container
 {
-  border: 1px solid black;
+  display:flex;
+  justify-content:center;
 }
 
-td
+.form_container div>div
+{
+  display:flex;
+  justify-content:center;
+}
+
+#new_book
+{
+  text-align:center;
+}
+
+#book_form
+{
+  background-color:cyan;
+  padding:10px;
+}
+
+.book_container
+{
+  display:flex;
+  justify-content:center;
+}
+
+table,th,tr,td
 {
   border: 1px solid black;
 }

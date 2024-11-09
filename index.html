@@ -3,23 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Library</title>
   <script src="index.js" defer></script>
   <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-  <table class="library_table">
-    <tr>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Number of Pages</th>
-      <th>Have Read</th>
-      <th>Remove</th>
-    </tr>
-  </table>
-  <br>
+<div class="form_container">
+  <div>
+    <div>
   <button type="button" id="new_book">NEW BOOK</button>
-
+    </div>
+    <dialog id="form_dialog">
   <form id="book_form">
     <label for="title">Title:</label><br>
     <input type="text" id="title" name="title"><br>
@@ -27,12 +21,33 @@
     <label for="author">Author:</label><br>
     <input type="text" id="author" name="author"><br>
     <br>
-    <label for="pages">Number of Pages:</label><br>
-    <input type="text" id="pages" name="pages"><br>
+    <label for="page">Number of Pages:</label><br>
+    <input type="number" id="page" name="page"><br>
     <br>
     <label for="read">Have Read:</label><br>
-    <input type="text" id="read" name="read"><br>
+    <input type="radio" id="read" name="readstatus" value="Read">
+    <label for="read">read</label><br>
+    <input type="radio" id="havenotread" name="readstatus" value="HaveNotRead">
+    <label for="havenotread">have not read</label><br>
     <button type="submit" id="submit_book">Submit</button>
+    <button type="button" id="close_dialog">Close</button>
   </form>
+  </div>
+</div>
+</dialog>
+<div class="book_container">
+<table class="book_table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>PageNo</th>
+      <th>Read?</th>
+      <th>Remove</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+</div>
 </body>
 </html>
